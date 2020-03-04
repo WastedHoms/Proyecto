@@ -1,0 +1,75 @@
+create database Verdant;
+use Verdant;
+
+create table equipo(
+	ID int primary key, 
+	nombre varchar(50) not null,
+	division int not null,
+	puntos int not null,
+	ganados int not null, 
+	perdidos int not null,
+	empatados int not null,
+	golesFavor int not null default 0,
+	golesContra int not null default 0
+
+);
+
+create table jornada(
+	numero int primary key, 
+	fecha date not null
+);
+
+create table partido (
+	numerojornada int not null, 
+	codigoequipoL int not null,
+	codigoequipoV int not null,
+	golesLocal int not null default 0,
+	golesVisitante int not null default 0,
+	primary key (numerojornada, codigoequipoL, codigoequipoV),
+	foreign key (numerojornada) references jornada(numero),
+	foreign key (codigoequipoL) references equipo(ID),
+	foreign key (codigoequipoV) references equipo(ID)
+
+);
+
+create table jugador (
+	ID int primary key, 
+	nombre varchar(50) not null,
+	bolasPortero int not null default 0,
+	golesContra int not null default 0,
+	golesDefensa int not null default 0,
+	golesMedio int not null default 0,
+	golesDelantero int not null default 0,
+	golesPropia int not null default 0,
+	ganados int not null, 
+	perdidos int not null,
+	empatados int not null,
+	IDequipo int not null,
+	foreign key (IDequipo) references equipo(ID)
+);
+
+create table producto(
+	ID int primary key, 
+	stock int not null,
+	precio numeric(7,2) not null
+);
+
+create table pedido(
+	ID int primary key, 
+	fecha date not null,
+	nombrecliente varchar(50) not null,
+	direccion varchar(100) not null
+);
+
+create table compuesto(
+	pvp numeric(7,2) not null,
+	cantidad int not null,
+	IDproducto int not null,
+	IDpedido int not null,
+	primary key (IDproducto, IDpedido),
+	foreign key (IDproducto) references producto(ID),
+	foreign key (IDpedido) references pedido(ID)
+);
+
+create user 'Verdant'@'localhost' identified by 'Verdant';
+GRANT ALL PRIVILEGES ON * . * TO 'Verdant'@'localhost';
