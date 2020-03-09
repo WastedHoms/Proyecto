@@ -89,6 +89,51 @@ class Equipo {
 }
 
 
+public function seleccionarPartidos($division, $dia){
+    $partidos=array();
+
+    $canal=new mysqli(IP,USUARIO,CLAVE,BD);
+    if (mysqli_connect_errno()) {
+        printf("Connect failed: %s\n", mysqli_connect_error());
+        exit();
+    }
+    $canal->set_charset("utf8");
+    
+    //Preparación de la sentencia para seleccionar todos los códigos de los jugadores
+    $stmt=$canal->prepare("SELECT * FROM partidos where fecha= ? && division=?"); 
+    $sql->bind_param('d',$this->id);
+    if (!$stmt){
+        die("mal la sentencia");
+    }
+    //Ejecución de la sentencia
+    if (!$stmt->execute()){
+        die("de puta pena");
+    }
+    //El dato obtenido se guarda en esta variable
+    $stmt->bind_result($j);
+
+
+        $contador=0;
+        //Bucle para introducir en el array todos los codigos de jugadores
+        while($stmt->fetch()) {
+
+            $partidos[$contador]=$j;
+
+
+           $contador++;
+        }
+    
+       
+
+           /* cerrar sentencia */
+        $stmt->close();
+       
+        unset($stmt);
+        
+        //Se cierra el canal
+        $canal->close();
+}
+
 
 }
 ?>

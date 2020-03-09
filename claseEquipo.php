@@ -6,12 +6,16 @@ class Equipo {
   private $id;
   private $nombre;
   private $division;
+  private $golesL;
+  private $golesV;
     
   //Constructor
     function __construct($nombre, $id, $division) {
       $this->nombre = $nombre;
       $this->id = $id;
       $this->division = $division;
+      $this->golesL = 0;
+      $this->golesV = 0;
      
      }
      //Funciones para obtener los datos
@@ -49,8 +53,8 @@ class Equipo {
     $canal->set_charset("utf8");
     
     //Preparación de la sentencia para seleccionar todos los códigos de los jugadores
-    $stmt=$canal->prepare("SELECT codigo FROM jugadores where ID = ?"); 
-    $sql->bind_param('d',$id);
+    $stmt=$canal->prepare("SELECT * FROM jugadores where ID = ?"); 
+    $sql->bind_param('d',$this->id);
     if (!$stmt){
         die("mal la sentencia");
     }
